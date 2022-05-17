@@ -27,7 +27,6 @@ namespace Berlex.Devtools
             string target, string version,
             ILogger log)
         {
-            log.LogInformation("C# HTTP trigger function processed a request.");
             var github = new GitHubClient(new ProductHeaderValue("berlexdevtools"));
             var releases = await github.Repository.Release.GetAll("Nickztar", "berlexdevtools");
             if (releases.Any())
@@ -48,10 +47,11 @@ namespace Berlex.Devtools
                                 Version = releaseTag,
                                 Url = targetedAsset.BrowserDownloadUrl,
                                 Signature = signature,
-                                PublishDate = latest.PublishedAt?.DateTime.ToString("s", System.Globalization.CultureInfo.InvariantCulture) ?? DateTime.UtcNow.ToString("s", System.Globalization.CultureInfo.InvariantCulture),
+                                PublishDate = latest.PublishedAt?.DateTime.ToString("o") ?? DateTime.UtcNow.ToString("o"),
                                 Notes = latest.Body
                             };
                             var json = JsonConvert.SerializeObject(result);
+                            log.LogInformation($"Release available for {target} & {version}: " + json);
 
                             return new HttpResponseMessage(HttpStatusCode.OK)
                             {
