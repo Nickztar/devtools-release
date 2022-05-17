@@ -47,7 +47,7 @@ namespace Berlex.Devtools
                             {
                                 Version = releaseTag,
                                 Url = targetedAsset.BrowserDownloadUrl,
-                                Signature = assetSignature.BrowserDownloadUrl,
+                                Signature = signature,
                                 PublishDate = latest.PublishedAt?.DateTime.ToString("s", System.Globalization.CultureInfo.InvariantCulture) ?? DateTime.UtcNow.ToString("s", System.Globalization.CultureInfo.InvariantCulture),
                                 Notes = latest.Body
                             };
