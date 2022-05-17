@@ -32,7 +32,7 @@ namespace Berlex.Devtools
             var releases = await github.Repository.Release.GetAll("Nickztar", "berlexdevtools");
             if (releases.Any())
             {
-                var latest = releases[0];
+                var latest = releases.First();
                 var releaseTag = latest.TagName.Replace("app-v", "");
                 if (Version.TryParse(releaseTag, out Version releaseVersion) && Version.TryParse(version, out Version currentVersion) && releaseVersion > currentVersion)
                 {
@@ -47,8 +47,8 @@ namespace Berlex.Devtools
                             {
                                 Version = releaseTag,
                                 Url = targetedAsset.BrowserDownloadUrl,
-                                Signature = signature,
-                                PublishDate = latest.PublishedAt?.DateTime ?? DateTime.UtcNow,
+                                Signature = assetSignature.BrowserDownloadUrl,
+                                PublishDate = latest.PublishedAt?.DateTime.ToString("s", System.Globalization.CultureInfo.InvariantCulture) ?? DateTime.UtcNow.ToString("s", System.Globalization.CultureInfo.InvariantCulture),
                                 Notes = latest.Body
                             };
                             var json = JsonConvert.SerializeObject(result);
@@ -68,7 +68,7 @@ namespace Berlex.Devtools
 
         static Dictionary<string, string> Matches = new(){
             { "windows", "msi.zip" },
-            { "macos", "app.tar.gz" },
+            { "darwin", "app.tar.gz" },
             { "linux", "appimage.tar.gz" }
         };
         public static ReleaseAsset AssetForTarget(this IReadOnlyList<ReleaseAsset> assets, string target)

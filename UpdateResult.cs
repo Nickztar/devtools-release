@@ -10,7 +10,7 @@ public class UpdateResult
     [JsonProperty("notes")]
     public string Notes { get; set; }
     [JsonProperty("pub_date")]
-    public DateTime PublishDate { get; set; }
+    public string PublishDate { get; set; }
     [JsonProperty("signature")]
     public string Signature { get; set; }
 }
